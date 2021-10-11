@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.data.hotel.HotelPictureMapper">
+
+
+    <insert id="addPicture" parameterType="com.example.hotel.po.Picture" useGeneratedKeys="true" keyProperty="id">
+        insert into PictureList(hotelId,linkStr)
+        values (#{hotelId},#{linkStr})
+    </insert>
+
+    <select id="getPictures" resultMap="Picture">
+        select * from PictureList where hotelId=#{hotelId}
+    </select>
+
+    <resultMap id="Picture" type="com.example.hotel.po.Picture">
+
+    </resultMap>
+</mapper>

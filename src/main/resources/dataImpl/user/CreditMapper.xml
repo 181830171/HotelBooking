@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hotel.data.user.CreditMapper">
+    <insert id="addCreditRecord" parameterType="com.example.hotel.po.UserCredit" useGeneratedKeys="true" keyProperty="id">
+        insert into Credit(orderId,userId,createDate,actionType,creditChange,res)
+        values(#{orderId},#{userId},#{createDate},#{actionType},#{change},#{res})
+    </insert>
+    <!--插入一条信用记录，注意这里不可以使用orderid作为主键，因为延时入住会造成orderid不唯一-->
+
+    <select id="getAllCredits" resultMap="Credit">
+        select * from Credit
+    </select>
+
+    <select id="getUserCredits" resultMap="Credit">
+        select * from Credit where userId=#{id}
+    </select>
+
+    <resultMap id="Credit" type="com.example.hotel.po.UserCredit">
+
+    </resultMap>
+</mapper>

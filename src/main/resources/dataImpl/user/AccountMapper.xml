@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hotel.data.user.AccountMapper">
+    <insert id="createNewAccount" parameterType="com.example.hotel.po.User" useGeneratedKeys="true" keyProperty="id">
+        insert into User(email,password,username,phonenumber,credit,usertype)
+        values(#{email},#{password},#{userName},#{phoneNumber},#{credit},#{userType})
+    </insert>
+    <select id="getAccountByEmail" resultMap="User">
+        select * from User where email=#{email}
+    </select>
+    <!--根据用户名查询账户 注意缺省条件下查询不区分大小写 一种方式是在查询时加上binary 这样可以区分大小写不同的用户名-->
+    <select id="getAccountByName" resultMap="User">
+        select * from User where binary username=#{username}
+    </select>
+    <select id="getAccountById" resultMap="User">
+        select * from User where id=#{id}
+    </select>
+    <update id="updateAccount">
+        update User set password=#{password},username=#{userName},phonenumber=#{phoneNumber}
+        where id=#{id}
+    </update>
+    <delete id="deleteUser">
+        delete from User where id=#{id}
+    </delete>
+    <!--删除用户-->
+
+    <update id="updateCredit">
+        update User set credit=credit+#{change} where id=#{id}
+    </update>
+    <!--更新信用记录-->
+
+    <select id="getCurrentUserCredit" resultType="double">
+        select credit from User where id=#{id}
+    </select>
+    <!--获取客户当前信用值-->
+
+
+
+
+    <resultMap id="User" type="com.example.hotel.po.User">
+        <id column="id" property="id"></id>
+        <result column="email" property="email"></result>
+        <result column="password" property="password"></result>
+        <result column="username" property="userName"></result>
+        <result column="phonenumber" property="phoneNumber"></result>
+        <result column="credit" property="credit"></result>
+        <result column="usertype" property="userType"></result>
+    </resultMap>
+</mapper>
