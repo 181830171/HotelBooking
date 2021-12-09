@@ -56,6 +56,7 @@
                 :dataSource="hotelSearchList"
                 bordered
                 style="width: 1000px"
+                :locale="{emptyText:'请点击重置刷新数据'}"
         >
             <span slot="bizRegion" slot-scope="text">{{text}}</span>
             <span slot="rate" slot-scope="text">{{text}}</span>
@@ -68,13 +69,14 @@
                 <a-tag color="green" v-if="checkwhetherin(text.name)==true">曾经预定</a-tag>
                 <a-tag color="cyan" v-if="checkwhetherin(text.name)==false">从未预定</a-tag>
             </span>
-
+          <span slot="lowestPrice" slot-scope="text" style="color: #ff6666">{{text}}/起</span>
         </a-table>
 
     </a-modal>
 </template>
 
 <script>import {mapActions, mapGetters, mapMutations} from "vuex";
+import hotelList from "@/views/hotel/hotelList";
 const list=['One','Two','Three','Four','Five'];
 const rows=[
     {
@@ -119,6 +121,12 @@ const rows=[
         title:'是否预定过',
         key:'ordered',
         scopedSlots:{customRender:'ordered'}
+    },
+    {
+      title:'价格',
+      key:'lowestPrice',
+      dataIndex: 'lowestPrice',
+      scopedSlots:{customRender:'lowestPrice'}
     }
 ]
     export default {
@@ -156,9 +164,12 @@ const rows=[
         beforeCreate() {
             this.form = this.$form.createForm(this, { name: 'hotelInList' });
         },
-        async mounted() {
-            this.hotelLoading()
+        async beforeMount() {
+            // await this.hotelLoading()
             await this.getUserOrders()
+          setTimeout(()=>{
+            this.hotelLoading()
+          },100)
         },
         methods: {
             ...mapMutations([
@@ -167,6 +178,7 @@ const rows=[
             ...mapActions([
                 'getHotelList',
                 'getUserOrders',
+                'getLowestPrice'
             ]),
             confirm() {
                 this.set_hotelInListVisible(false)
@@ -179,14 +191,17 @@ const rows=[
                 this.hotelSearchList=[]
                 for(let i=0;i<this.hotelList.length;i++){
                     if(this.hotelList[i].name.indexOf(this.search)>=0){
+                      // this.hotelList[i].lowestPrice=this.getPrice(this.hotelList[i].id)
                         this.hotelSearchList.push(this.hotelList[i]);
                     }
                 }
             },
-            hotelLoading(){
+          async hotelLoading(){
                 console.log('hi')
                 this.hotelSearchList=[]
+                console.log(this.hotelList)
                 for(let i=0;i<this.hotelList.length;i++){
+                  this.hotelList[i].lowestPrice= await this.getLowestPrice(this.hotelList[i].id)
                     this.hotelSearchList.push(this.hotelList[i])
                 }
                 this.search=''
@@ -196,12 +211,8 @@ const rows=[
 
             },
             checkwhetherin(hotelname){
-                console.log('i am in')
-                console.log(this.userOrderList.length)
                 for(let i=0;i<this.userOrderList.length;i++){
-                    console.log('i am in here')
                     if(hotelname==this.userOrderList[i].hotelName){
-                        console.log('true')
                         return true
                     }
                 }

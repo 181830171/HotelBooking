@@ -22,14 +22,14 @@ import {
 const hotel = {
     state: {
         hotelList: [
-            
+
         ],
         hotelListParams: {
             pageNo: 0,
             pageSize: 12
         },
         hotelListLoading: true,
-        currentHotelId: '',
+        currentHotelId: ''  ,
         currentHotelInfo: {
 
         },
@@ -202,6 +202,17 @@ const hotel = {
                 message.error("获取图片失败")
             }
         },
+        getLowestPrice: async ({state},hotelId)=>{
+            const res = await getHotelByIdAPI({
+                hotelId: hotelId
+            })
+            if(res){
+                let lowestPrice=res.rooms.reduce((lp,item)=> Math.min(item.price,lp),Number.MAX_VALUE)
+                return lowestPrice
+            }else{
+                message.error("获取最低价失败")
+            }
+        }
         // getHotelOrders: async ({state,commit},hotelId)=>{
         //     const res=await getHotelOrdersAPI(hotelId)
         //     if(res){

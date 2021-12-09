@@ -25,17 +25,6 @@
 
             </a-card-meta>
         </a-card>
-        <a-divider type="vertical"></a-divider>
-        <div>
-            <a-card title="会员需知" :bordered="false" style="width: 350px">
-                <p>普通会员在生日当月预定，则打8折</p>
-                <p>企业会员预定即享受88折优惠</p>
-                <p>会员同时还可享受会员等级折扣或商圈折扣的折上折</p>
-                <p>信用值每增加500，会员等级增加一级</p>
-                <p>会员等级折扣为level1打95折扣，level2打9折。以此类推，每提高一级折扣提高0.05</p>
-                <p>会员等级折扣上限为7折</p>
-            </a-card>
-        </div>
     </div>
 </template>
 
@@ -53,7 +42,10 @@
         async mounted() {
             await this.getVIPInfoByUserId(this.userId)
         },
-        methods: {
+        async beforeUpdate() {
+          await this.getVIPInfoByUserId(this.userId)
+        },
+      methods: {
             ...mapMutations([]),
             ...mapActions([
                 'getVIPInfoByUserId',

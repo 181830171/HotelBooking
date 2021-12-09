@@ -13,10 +13,15 @@
                   </span>
               </div>
             <div class="card-wrapper">
-                <HotelCard :hotel="item" v-for="item in hotelList" :key="item.index" @click.native="jumpToDetails(item.id)"></HotelCard>
+                <HotelCard :hotel="item" v-for="item in hotelsInCurrentPage" :key="item.name" @click.native="jumpToDetails(item.id)"></HotelCard>
                 <div v-for="item in emptyBox" :key="item.name" class="emptyBox ant-col-xs-7 ant-col-lg-5 ant-col-xxl-3">
                 </div>
-                <a-pagination showQuickJumper :total="hotelList.totalElements" :defaultCurrent="1" @change="pageChange"></a-pagination>
+                <a-pagination
+                  v-model="currentPage"
+                  showQuickJumper
+                  :total="hotelList.length"
+                  :defaultPageSize="4"
+                  @change="pageChange"></a-pagination>
 <!--                //add on 5.10-->
                 <hotelInList></hotelInList>
             </div>
@@ -44,10 +49,12 @@ export default {
   },
   data(){
     return{
+      currentPage:1,
       emptyBox: [{ name: 'box1' }, { name: 'box2'}, {name: 'box3'}],
     }
   },
-    async mounted() {
+
+  async mounted() {
     await this.getHotelList()
   },
   computed: {
@@ -57,7 +64,10 @@ export default {
       //add on 5.10
       'hotelInListVisible',
 
-    ])
+    ]),
+    hotelsInCurrentPage(){
+      return this.hotelList.slice(this.currentPage*4-4,this.currentPage*4)
+    }
   },
   methods: {
     ...mapMutations([
