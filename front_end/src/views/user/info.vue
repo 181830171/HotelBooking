@@ -2,8 +2,7 @@
     <div class="info-wrapper">
         <a-tabs>
             <a-tab-pane tab="我的信息" key="1">
-                <a-form :form="form" style="margin-top: 30px">
-
+                <a-form :form="form" style="margin-top: 30px" v-if="!modifypwd">
                     <a-form-item label="用户名" :label-col="{ span: 3 }" :wrapper-col="{ span: 8, offset: 1  }">
                         <a-input
                             placeholder="请填写用户名"
@@ -22,7 +21,7 @@
                             v-decorator="['phoneNumber', { rules: [{ required: true, message: '请输入手机号' }] }]"
                             v-if="modify"
                             oninput = "value=value.replace(/[^\d]/g,'')"
-                            maxLength="11"
+                            :maxLength="11"
                         />
                         <span v-else>{{ userInfo.phoneNumber}}</span>
                     </a-form-item>
@@ -35,13 +34,13 @@
                             查看信用记录
                         </a-button>
                     </a-form-item>
-                    <a-form-item label="密码" :label-col="{ span: 3 }" :wrapper-col="{ span: 8, offset: 1 }" v-if="modify">
-                        <a-input
-                            placeholder="请输入新密码"
-                            v-decorator="['password', { rules: [{ required: true, message: '请输入新密码' }] }]"
-                            maxlength="11"
-                        />
-                    </a-form-item>
+<!--                    <a-form-item label="密码" :label-col="{ span: 3 }" :wrapper-col="{ span: 8, offset: 1 }" v-if="modify">-->
+<!--                        <a-input-->
+<!--                            placeholder="请输入新密码"-->
+<!--                            v-decorator="['password', { rules: [{ required: true, message: '请输入新密码' }] }]"-->
+<!--                            maxlength="11"-->
+<!--                        />-->
+<!--                    </a-form-item>-->
                     <a-form-item :wrapper-col="{ span: 12, offset: 5 }" v-if="modify">
                         <a-button type="primary" @click="saveModify">
                             保存
@@ -50,12 +49,44 @@
                             取消
                         </a-button>
                     </a-form-item>
-                     <a-form-item :wrapper-col="{ span: 8, offset: 4 }" v-else>
+                     <a-form-item class="buttonWrapper" :wrapper-col="{ span: 8, offset: 4 }" v-else>
                         <a-button type="primary" @click="modifyInfo"><a-icon type="edit" />修改信息
+                        </a-button>
+                         <a-button type="danger" @click="modifyPassword" style="margin: 20px"><a-icon type="key"/>修改密码</a-button>
+                    </a-form-item>
+                </a-form>
+                <CreditRecord v-if="!modifypwd"></CreditRecord>
+                <a-form :form="pwdForm" ref="pwdForm" style="margin-top:30px" v-if="modifypwd">
+                    <a-form-item label="原密码" :label-col="{ span: 3 }" :wrapper-col="{ span: 8, offset: 1 }" has-feedback>
+                        <a-input-password
+                                placeholder="请输入原密码"
+                                v-decorator="['oldPassword', { rules: [{ required: true, message: '请输入旧密码' },{validator:validateOldPassword}] }]"
+                                style="width: 250px"
+                        />
+                    </a-form-item>
+                    <a-form-item label="新密码" props="newPassword" :label-col="{ span: 3 }" :wrapper-col="{ span: 8, offset: 1 }" has-feedback>
+                        <a-input-password
+                                placeholder="请输入新密码"
+                                v-decorator="['newPassword', { rules: [{ required: true, message: '请输入新密码' },{validator:validateNewPassword}] }]"
+                                style="width: 250px"
+                        />
+                    </a-form-item>
+                    <a-form-item label="确认密码" props="checkPassword" :label-col="{ span: 3 }" :wrapper-col="{ span: 8, offset: 1 }" has-feedback>
+                        <a-input-password
+                                placeholder="请确认密码"
+                                v-decorator="['checkPassword', { rules: [{ required: true, message: '请再次确认密码' },{validator:validateCheckPassword}] }]"
+                                style="width: 250px"
+                        />
+                    </a-form-item>
+                    <a-form-item :wrapper-col="{ span: 12, offset: 5 }" style="position: relative;right: 20px">
+                        <a-button type="primary" @click="savepwdModify">
+                            保存
+                        </a-button>
+                        <a-button type="default" style="margin-left: 30px" @click="cancelModifyPassword">
+                            取消
                         </a-button>
                     </a-form-item>
                 </a-form>
-                <CreditRecord></CreditRecord>
             </a-tab-pane>
             <a-tab-pane tab="我的订单" key="2">
                 <a-table
@@ -179,6 +210,8 @@ export default {
             columns,
             data: [],
             form: this.$form.createForm(this, { name: 'coordinated' }),
+            modifypwd:false,
+            pwdForm:this.$form.createForm(this,{name:'coordinated'}),
         }
     },
     components: {
@@ -223,13 +256,50 @@ export default {
 
 
         ]),
+        savepwdModify(){
+          this.pwdForm.validateFields((err,values)=>{
+              if(!err){
+                  const data = {
+                      userName: this.userInfo.userName,
+                      phoneNumber: this.userInfo.phoneNumber,
+                      password: this.pwdForm.getFieldValue('newPassword')
+                  }
+                  this.updateUserInfo(data).then(()=>{
+                      this.modifypwd = false
+                  })
+              }
+          });
+        },
+        // 修改密码的相关校验
+        validateOldPassword(rule,value,callback){
+            if(value && value!==this.userInfo.password){
+                callback('和原密码不一致')
+            }else{
+                callback()
+            }
+        },
+        validateNewPassword(rule,value,callback){
+            if(value && value.length<6){
+                callback('密码少于6位')
+            }else{
+                callback()
+            }
+        },
+        validateCheckPassword(rule,value,callback){
+            if(value && value!==this.pwdForm.getFieldValue('newPassword')){
+                callback('两次密码不一致')
+            }else{
+                callback()
+            }
+        },
         saveModify() {
             this.form.validateFields((err, values) => {
                 if (!err) {
                     const data = {
                         userName: this.form.getFieldValue('userName'),
                         phoneNumber: this.form.getFieldValue('phoneNumber'),
-                        password: this.form.getFieldValue('password')
+                        //password: this.form.getFieldValue('password')
+                        password: this.userInfo.password
                     }
                     this.updateUserInfo(data).then(()=>{
                         this.modify = false
@@ -242,10 +312,16 @@ export default {
                 this.form.setFieldsValue({
                     'userName': this.userInfo.userName,
                     'phoneNumber': this.userInfo.phoneNumber,
-                    'password': this.userInfo.password,
+                    // 'password': this.userInfo.password,
                 })
             }, 0)
             this.modify = true
+        },
+        modifyPassword(){
+          this.modifypwd=true
+        },
+        cancelModifyPassword(){
+            this.modifypwd = false;
         },
         cancelModify() {
             this.modify = false
@@ -292,6 +368,10 @@ export default {
         .ant-tabs-bar {
             padding-left: 30px
         }
+    }
+    .buttonWrapper{
+        position: relative;
+        bottom:20px
     }
 </style>
 <style lang="less">

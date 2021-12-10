@@ -1,9 +1,16 @@
 <template>
   <div class="hotelList">
-      <a-button type="default" style="margin-left: 90%" @click="showHotelInList()">
-          列表查看<a-icon type="search"></a-icon>
+      <a-input-search
+        placeholder="输入想要搜索的酒店名称" style="width:250px;left:30%"
+        size="large"
+        @search="onSearch()"
+        v-model="search"
+        :loading="isloading"
+      />
+      <a-button type="default" style="margin-left: 90%;bottom:40px" @click="showHotelInList()" size="large">
+          列表查看<a-icon type="unordered-list" />
       </a-button>
-    <a-layout>
+    <a-layout style="position:relative;bottom:20px">
         <a-layout-content style="min-width: 800px">
           <a-spin :spinning="hotelListLoading">
               <div class="searchbox" style="text-align: right">
@@ -19,7 +26,7 @@
                 <a-pagination
                   v-model="currentPage"
                   showQuickJumper
-                  :total="hotelList.length"
+                  :total="hotelInDisplay.length"
                   :defaultPageSize="4"
                   @change="pageChange"></a-pagination>
 <!--                //add on 5.10-->
@@ -51,11 +58,16 @@ export default {
     return{
       currentPage:1,
       emptyBox: [{ name: 'box1' }, { name: 'box2'}, {name: 'box3'}],
+      hotelInDisplay:[],
+      isSearch:false,
+      search:'',
+      isloading:false
     }
   },
 
   async mounted() {
     await this.getHotelList()
+    this.hotelInDisplay=this.hotelList
   },
   computed: {
     ...mapGetters([
@@ -66,6 +78,10 @@ export default {
 
     ]),
     hotelsInCurrentPage(){
+      //this.hotelInDisplay = this.hotelList.slice(this.currentPage*4-4,this.currentPage*4)
+      if((this.isSearch || this.search) && this.hotelInDisplay.length!==0){
+          return this.hotelInDisplay.slice(this.currentPage*4-4,this.currentPage*4)
+      }
       return this.hotelList.slice(this.currentPage*4-4,this.currentPage*4)
     }
   },
@@ -98,7 +114,33 @@ export default {
       this.getHotelList()
       this.set_hotelInListVisible(true)
     },
+    onSearch(){
+        this.isloading = true
+        if(this.search!==''){
+            this.hotelInDisplay=[]
+            for(let i=0;i<this.hotelList.length;i++){
+                if(this.hotelList[i].name.indexOf(this.search)>=0){
+                    // this.hotelList[i].lowestPrice=this.getPrice(this.hotelList[i].id)
+                    this.hotelInDisplay.push(this.hotelList[i]);
+                }
+            }
+            if(this.hotelInDisplay.length===0){
+                this.$message.error('未找到符合的酒店')
+                this.hotelInDisplay = this.hotelList
+                this.isSearch=false
+            }else{
+                this.isSearch=true
+            }
+            this.currentPage=1;
+        }else{
+            this.hotelInDisplay=this.hotelList
+            this.isSearch=false
+        }
+        setTimeout(()=>{
+            this.isloading=false
+        },1000)
 
+    }
   }
 
 }
