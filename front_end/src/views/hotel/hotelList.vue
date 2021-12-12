@@ -29,9 +29,6 @@
       <a-button type="default" style="margin-left: 90%;bottom:40px" @click="showHotelInList()" size="large">
           列表查看<a-icon type="unordered-list" />
       </a-button>
-      <a-button type="default" style="margin-left: 90%" @click="showHotelInList()">
-          列表查看<a-icon type="search"></a-icon>
-      </a-button>
     <a-layout style="position:relative;bottom:20px">
         <a-layout-content style="min-width: 800px">
           <a-spin :spinning="hotelListLoading">
