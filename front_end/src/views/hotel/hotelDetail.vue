@@ -29,7 +29,7 @@
                             <span class="value">{{ currentHotelInfo.address }}</span>
                         </div>
                         <div class="items" v-if="currentHotelInfo.rate">
-                            <span class="label">评分:</span> 
+                            <span class="label">评分:</span>
                             <span class="value">{{ currentHotelInfo.rate }}分</span>
                         </div>
                         <div class="items" v-else>
@@ -41,7 +41,7 @@
                             <a-rate style="font-size: 15px" :value="list.indexOf(currentHotelInfo.hotelStar)+1" disabled />
                         </div>
                         <div class="items" v-if="currentHotelInfo.description">
-                            <span class="label">酒店简介:</span> 
+                            <span class="label">酒店简介:</span>
                             <span class="value">{{ currentHotelInfo.description }}</span>
                         </div>
                     </div>
@@ -54,13 +54,42 @@
                             <RoomCard :roomInfo="room" v-for="room in currentHotelInfo.rooms" :key="room.index"></RoomCard>
                         </div>
                     </a-tab-pane>
-                    <a-tab-pane tab="酒店详情" key="2">
-                        <Picture :pictures="currentPictureList"></Picture>
+                    <a-tab-pane tab="优惠活动" key="2">
+                        <a-collapse v-if="hotelCoupons.length>0" v-model="activeKey">
+                            <a-collapse-panel v-for="(coupon,index) in hotelCoupons" :key="currentHotelInfo.id+' '+index" :header="coupon.couponName">
+                                <a-descriptions title="活动详情" size="middle">
+                                    <a-descriptions-item label="优惠介绍">
+                                        {{coupon.description}}
+                                    </a-descriptions-item>
+                                    <a-descriptions-item label="优惠门槛">
+                                        <span v-if="coupon.targetMoney===0">无门槛</span>
+                                        <span v-else>消费金额满{{coupon.targetMoney}}</span>
+                                    </a-descriptions-item>
+                                    <a-descriptions-item label="折扣/优惠">
+                                        消费总额<span v-if="coupon.discount===0">减{{coupon.discountMoney}}元</span>
+                                        <span v-else>打{{coupon.discount*10}}折</span>
+                                    </a-descriptions-item>
+                                    <a-descriptions-item label="有效期" v-if="coupon.startTime">
+                                        {{coupon.startTime.substring(0,10) + '~' + coupon.endTime.substring(0,10)}}
+                                    </a-descriptions-item>
+                                </a-descriptions>
+                            </a-collapse-panel>
+                        </a-collapse>
+                        <a-empty v-else description="该酒店暂无优惠活动"/>
                     </a-tab-pane>
-                    <a-tab-pane tab="历史评价" key="3">
-                        <CommentList :comment="Comment" v-for="Comment in hotelComments" :key="Comment.index"></CommentList>
+                    <a-tab-pane tab="酒店详情" key="3">
+                        <div v-if="currentPictureList.length>0">
+                            <Picture :pictures="currentPictureList"></Picture>
+                        </div>
+                        <a-empty v-else description="该酒店暂未上传图片"/>
                     </a-tab-pane>
-                    <a-tab-pane tab="我的历史订单" key="4">
+                    <a-tab-pane tab="酒店评价" key="4">
+                        <div v-if="hotelComments.length>0">
+                            <CommentList :comment="Comment" v-for="Comment in hotelComments" :key="Comment.index"></CommentList>
+                        </div>
+                        <a-empty v-else description="该酒店暂无评价"/>
+                    </a-tab-pane>
+                    <a-tab-pane tab="我的历史订单" key="5">
                         <userOrderList></userOrderList>
                     </a-tab-pane>
                 </a-tabs>
@@ -74,6 +103,7 @@ import CommentList from './components/commentsList'
 import userOrderList from "./components/userOrderList";
 import Picture from "./components/picture";
 import RoomCard from "./components/roomCard";
+import * as CouponMethod from "@/api/coupon"
 export default {
     name: 'hotelDetail',
     components: {
@@ -88,8 +118,15 @@ export default {
         return{
             emptyBox: [{ name: 'box1' }, { name: 'box2'}, {name: 'box3'}],
             list: ['One','Two','Three','Four','Five'],
+            hotelCoupons:[
+                {
+                    couponName:'',
+                    description:'',
+                }
+            ],
+            activeKey:'1',
         }
-        }
+    }
     ,
     computed: {
         ...mapGetters([
@@ -106,6 +143,7 @@ export default {
         this.getCommentsByHotelId()
         this.getPictures()
         this.getVIPInfoByUserId(this.userId)
+        this.getCoupons()
     },
     beforeRouteUpdate(to, from, next) {
         this.set_currentHotelId(Number(to.params.hotelId))
@@ -123,6 +161,14 @@ export default {
             'getPictures',
             'getVIPInfoByUserId',
         ]),
+        async getCoupons(){
+            const res=await CouponMethod.hotelAllCouponsAPI(this.$route.params.hotelId)
+            if(res){
+                this.hotelCoupons=res
+                console.log(res)
+            }
+        },
+
     }
 }
 </script>

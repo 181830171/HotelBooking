@@ -1,13 +1,9 @@
 <template>
-    <div class="hotelCard" style="margin:10px ;width: 48%;display:flex;border: 1px lightgray solid">
-      <a-card class="hotelImg ant-col-xs-7 ant-col-lg-5 ant-col-xxl-3">
+    <div class="hotelCard" style="margin:10px ;width: 48%;height:250px;display:flex;border: 1px lightgray solid">
         <img
           alt="example"
           :src="hotel.picture"
-          slot="cover"
-          referrerPolicy="no-referrer"
         />
-      </a-card>
       <a-descriptions :title="hotel.name" size="default" style="margin: 10px" :column="1">
           <a-descriptions-item label="星级" >
               <a-rate style="font-size: 15px" :value="list.indexOf(hotel.hotelStar)+1" disabled allowHalf/>
@@ -56,14 +52,12 @@ export default {
 }
 </script>
 <style scoped lang="less">
-    .hotelImg {
-        margin: 10px 25px;
-        min-width: 180px;
-        max-height: 350px;
-        img {
-          height: 250px;
-        }
+
+    img {
+      height: 250px;
+        width:200px
     }
+
 </style>
 
 <style lang="less">

@@ -1,5 +1,24 @@
 <template>
+    <div>
   <div class="hotelList">
+          <a-carousel :autoplay="true">
+              <div>
+                  <a-tooltip placement="top">
+                      <template slot="title">
+                          <span>点击查看详情</span>
+                      </template>
+                      <img style="height: 200px;margin: auto" src="../../assets/double11.jpg" @click="showDrawer(coupons[0])">
+                  </a-tooltip>
+              </div>
+              <div>
+                  <a-tooltip placement="top">
+                      <template slot="title">
+                          <span>点击查看详情</span>
+                      </template>
+                      <img style="height: 200px;margin:auto" src="../../assets/childrenDay.jpg" @click="showDrawer(coupons[1])">
+                  </a-tooltip>
+              </div>
+          </a-carousel>
       <a-button type="default" style="margin-left: 90%" @click="showHotelInList()">
           列表查看<a-icon type="search"></a-icon>
       </a-button>
@@ -22,7 +41,6 @@
                   :total="hotelList.length"
                   :defaultPageSize="4"
                   @change="pageChange"></a-pagination>
-<!--                //add on 5.10-->
                 <hotelInList></hotelInList>
             </div>
 
@@ -30,13 +48,44 @@
       </a-layout-content>
 
     </a-layout>
-<!--      <hotel-in-list></hotel-in-list>-->
   </div>
+    <a-drawer
+        title="活动详情"
+        placement="right"
+        :visible="visible1"
+        @close="onClose"
+        :width="500"
+    >
+        <a-descriptions
+            :column="2"
+            :title="coupon.couponName"
+            size="middle">
+            <a-descriptions-item label="优惠介绍">
+                {{coupon.description}}
+            </a-descriptions-item>
+            <a-descriptions-item label="优惠门槛">
+                <span v-if="coupon.targetMoney===0">无门槛</span>
+                <span v-else>消费金额满{{coupon.targetMoney}}</span>
+            </a-descriptions-item>
+            <a-descriptions-item label="折扣/优惠">
+                消费总额<span v-if="coupon.discount===0">减{{coupon.discountMoney}}元</span>
+                <span v-else>打{{coupon.discount*10}}折</span>
+            </a-descriptions-item>
+            <a-descriptions-item label="有效期" v-if="coupon.startTime">
+                {{coupon.startTime.substring(0,10) + '~' + coupon.endTime.substring(0,10)}}
+            </a-descriptions-item>
+            <a-descriptions-item label="活动范围">
+                全网站酒店同享
+            </a-descriptions-item>
+        </a-descriptions>
+    </a-drawer>
+    </div>
 </template>
 <script>
 import HotelCard from './components/hotelCard'
 import HotelInList from './components/hotelInList'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import * as couponMethod from '@/api/coupon'
 
 
 export default {
@@ -51,11 +100,23 @@ export default {
     return{
       currentPage:1,
       emptyBox: [{ name: 'box1' }, { name: 'box2'}, {name: 'box3'}],
+      visible1:false,
+      coupons:[],
+      coupon:{
+          couponName:'',
+          description:'',
+          targetMoney:'',
+          startTime:'',
+          endTime:'',
+          discountMoney:'',
+          discount:'',
+      }
     }
   },
 
   async mounted() {
     await this.getHotelList()
+    await this.getCoupons()
   },
   computed: {
     ...mapGetters([
@@ -81,7 +142,19 @@ export default {
       'getHotelList',
 
     ]),
-
+      showDrawer(coupon) {
+          this.visible1 = true;
+          this.coupon=coupon;
+      },
+      onClose() {
+          this.visible1 = false;
+      },
+      async getCoupons(){
+        const res = await couponMethod.hotelAllCouponsAPI(-1)
+          if(res){
+              this.coupons=res
+          }
+      },
     pageChange(page, pageSize) {
       const data = {
         pageNo: page - 1
@@ -104,6 +177,9 @@ export default {
 }
 </script>
 <style scoped lang="less">
+//.double11{
+//    background: url('../../assets/double11.jpg');
+//}
   .hotelList {
     text-align: center;
     padding: 50px 0;
@@ -116,7 +192,7 @@ export default {
       justify-content: space-around;
       flex-wrap: wrap;
       flex-grow: 3;
-      min-height: 800px
+      //min-height: 800px
     }
     .card-wrapper .card-item {
       margin: 30px;
