@@ -1,4 +1,5 @@
 <template>
+    <div style="padding: 80px">
   <div class="main">
       <div class="top">
         <div class="header">
@@ -6,9 +7,6 @@
              <img src="https://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/24-hours.png" class="logo" alt="logo">
             <span class="title">NJU酒店管理系统</span>
           </div>
-        </div>
-        <div class="desc">
-          
         </div>
       </div>
     <a-form
@@ -69,7 +67,7 @@
               type="email"
               placeholder="邮箱"
               v-decorator="[
-              'registerUserMail', 
+              'registerUserMail',
               {rules: [{ required: true, type: 'email', message: '请输入邮箱' }], validateTrigger: 'blur'}]">
               <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input>
@@ -79,7 +77,7 @@
               size="large"
               placeholder="用户名"
               v-decorator="[
-              'registerUsername', 
+              'registerUsername',
               {rules: [{ required: true, message: '请输入用户名' }], validateTrigger: 'blur'}]">
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input>
@@ -89,7 +87,7 @@
               size="large"
               placeholder="手机号"
               v-decorator="[
-              'registerPhoneNumber', 
+              'registerPhoneNumber',
               {rules: [{ required: true, message: '请输入手机号' }], validateTrigger: 'blur'}]"
               oninput = "value=value.replace(/[^\d]/g,'')"
               maxlength="11"
@@ -103,7 +101,7 @@
               type="password"
               placeholder="密码"
               v-decorator="[
-                'registerPassword', 
+                'registerPassword',
                 {rules: [{ required: true, message: '请输入密码' }, { validator: this.handlePassword }], validateTrigger: 'blur'}]"
               maxlength="11"
             >
@@ -116,7 +114,7 @@
               type="password"
               placeholder="确认密码"
               v-decorator="[
-                'registerPasswordconfirm', 
+                'registerPasswordconfirm',
                 {rules: [{ required: true, message: '请输入密码' }, { validator: this.handlePasswordCheck }], validateTrigger: 'blur'}]"
               maxlength="11"
             >
@@ -135,7 +133,7 @@
         </a-tab-pane>
       </a-tabs>
     </a-form>
-
+  </div>
   </div>
 </template>
 
@@ -145,7 +143,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'login',
   components: {
-    
+
   },
   data () {
     return {
@@ -265,9 +263,12 @@ export default {
 <style lang="less" scoped>
 
 .main{
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 15px;
+    padding: 25px;
     min-width: 260px;
-    width: 368px;
-    margin: 100px auto;
+    width: 428px;
+    margin: 0px auto;
     .top {
         text-align: center;
 

@@ -46,7 +46,7 @@
               </a-form>
               <VipCard ref="vipCard" v-else></VipCard>
               <a-divider type="vertical"></a-divider>
-              <div style="max-width: 48%">
+              <div style="max-width: 48%;margin-bottom: 20px">
                 <a-card title="会员需知" :bordered="false" style="width: 100%">
                   <p>普通会员在生日当月预定，则打8折</p>
                   <p>企业会员预定即享受88折优惠</p>
@@ -193,7 +193,9 @@
 
 <style scoped lang="less">
     .vip-wrapper {
-        padding: 50px;
+        padding: 25px;
+        margin: 50px 60px;
+        background-color: rgba(255,255,255,0.9);
         .chart {
             display: flex;
             align-items: center;

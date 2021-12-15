@@ -12,6 +12,8 @@ export default {
     name: 'layout',
     components: {
         Header
-    }
+    },
 }
 </script>
+<style>
+</style>

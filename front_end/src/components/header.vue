@@ -3,7 +3,7 @@
         <div class="label">
             <img src="https://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/24-hours.png" class="logo" alt="logo" @click="jumpToHome">
             <span class="title">NJUSE 酒店管理系统</span>
-            
+
         </div>
         <a-menu v-model="current" mode="horizontal" theme="light">
             <a-menu-item key="1" @click="selectMenu">
@@ -51,9 +51,9 @@
                 </a-menu>
             </a-dropdown>
         </div>
-        
+
     </div>
-    
+
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
@@ -110,12 +110,15 @@ export default {
 </script>
 <style scoped lang="less">
     .header {
+        width: 100%;
         display: flex;
-        line-height: 44px;
-        height: 44px;
+        padding: 0 25px;
+        line-height: 70px;
+        height: 70px;
         align-items: center;
         justify-content: space-between;
-        min-width: 800px;
+        background-color: rgba(255,255,255,0.9);
+        //min-width: 800px;
         .label{
             height: 44px;
             line-height: 44px;
@@ -140,7 +143,7 @@ export default {
           }
 
           .search {
-              width: 300px; 
+              width: 300px;
               margin-left: 30px
           }
         }

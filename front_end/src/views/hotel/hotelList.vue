@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div style="padding: 30px 60px;">
   <div class="hotelList">
       <a-carousel :autoplay="true">
           <div>
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" effect="light">
                   <template slot="title">
                       <span>点击查看详情</span>
                   </template>
@@ -11,7 +11,7 @@
               </a-tooltip>
           </div>
           <div>
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" effect="light">
                   <template slot="title">
                       <span>点击查看详情</span>
                   </template>
@@ -29,8 +29,8 @@
       <a-button type="default" style="margin-left: 90%;bottom:40px" @click="showHotelInList()" size="large">
           列表查看<a-icon type="unordered-list" />
       </a-button>
-    <a-layout style="position:relative;bottom:20px">
-        <a-layout-content style="min-width: 800px">
+    <a-layout style="position:relative;bottom:20px;border-radius: 10px">
+        <a-layout-content style="min-width: 800px;">
           <a-spin :spinning="hotelListLoading">
               <div class="searchbox" style="text-align: right">
                   <span style="width: 100%;max-width: 520px">
@@ -128,6 +128,7 @@ export default {
   },
 
   async mounted() {
+      await this.getUserInfo()
     await this.getHotelList()
     await this.getCoupons()
     this.hotelInDisplay=this.hotelList
@@ -158,6 +159,7 @@ export default {
     ]),
     ...mapActions([
       'getHotelList',
+        'getUserInfo'
 
     ]),
       showDrawer(coupon) {
@@ -224,6 +226,7 @@ export default {
   .hotelList {
     text-align: center;
     padding: 50px 0;
+    border-radius: 10px;
     .emptyBox {
       height: 0;
       margin: 10px 10px
@@ -233,6 +236,7 @@ export default {
       justify-content: space-around;
       flex-wrap: wrap;
       flex-grow: 3;
+      margin: 15px 10px;
       //min-height: 800px
     }
     .card-wrapper .card-item {

@@ -1,6 +1,6 @@
 <template>
-    <a-layout>
-        <a-layout-content>
+<!--    <a-layout>-->
+<!--        <a-layout-content>-->
             <div class="hotelDetailCard">
                 <h1>
                     {{ currentHotelInfo.title }}
@@ -24,10 +24,10 @@
                             <span class="label">酒店商圈:</span>
                             <span class="value">{{ currentHotelInfo.bizRegion.charAt(6) }}区</span>
                         </div>
-                        <div class="items" v-if="currentHotelInfo.address">
-                            <span class="label">地址：</span>
-                            <span class="value">{{ currentHotelInfo.address }}</span>
-                        </div>
+<!--                        <div class="items" v-if="currentHotelInfo.address">-->
+<!--                            <span class="label">地址：</span>-->
+<!--                            <span class="value">{{ currentHotelInfo.address }}</span>-->
+<!--                        </div>-->
                         <div class="items" v-if="currentHotelInfo.rate">
                             <span class="label">评分:</span>
                             <span class="value">{{ currentHotelInfo.rate }}分</span>
@@ -45,11 +45,20 @@
                             <span class="value">{{ currentHotelInfo.description }}</span>
                         </div>
                     </div>
+                    <baidu-map :center="point" :zoom="18" @ready="handler" style="margin-left:25px;width: 550px;height: 300px">
+                        <bm-marker :position="point">
+                            <bm-label
+                                :content="hotelAddress"
+                                :label-style="{color:'red',fontSize : '12px'}"
+                                :offset="{width: -35, height: 30}"/>
+                        </bm-marker>
+                        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+                        <bm-overview-map anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :isOpen="true"></bm-overview-map>
+                    </baidu-map>
                 </div>
                 <a-divider></a-divider>
                 <a-tabs>
                     <a-tab-pane tab="房间信息" key="1">
-<!--                        <RoomList :rooms="currentHotelInfo.rooms"></RoomList>-->
                         <div class="card-wrapper">
                             <RoomCard :roomInfo="room" v-for="room in currentHotelInfo.rooms" :key="room.index"></RoomCard>
                         </div>
@@ -94,11 +103,12 @@
                     </a-tab-pane>
                 </a-tabs>
             </div>
-        </a-layout-content>
-    </a-layout>
+<!--        </a-layout-content>-->
+<!--    </a-layout>-->
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+// import myMap from './components/map'
 import CommentList from './components/commentsList'
 import userOrderList from "./components/userOrderList";
 import Picture from "./components/picture";
@@ -112,6 +122,7 @@ export default {
         //RoomList,
         CommentList,
         userOrderList,
+        // myMap
     },
     data() {
 
@@ -125,6 +136,8 @@ export default {
                 }
             ],
             activeKey:'1',
+            point: {lat:39.915,lng:116.404},
+            myGeo:{}
         }
     }
     ,
@@ -135,7 +148,11 @@ export default {
             'userOrderList',
             'currentPictureList',
             'userId',
-        ])
+        ]),
+
+        hotelAddress(){
+            return this.currentHotelInfo.address
+        }
     },
     mounted() {
         this.set_currentHotelId(Number(this.$route.params.hotelId))
@@ -150,6 +167,21 @@ export default {
         this.getHotelById()
         this.getCommentsByHotelId()
         next()
+    },
+    watch:{
+        hotelAddress:{
+            handler(val) {
+                this.myGeo.getPoint(val, (point) => {
+                    if (point) {
+                        console.log(point)
+                        this.point = point
+                    } else {
+                        alert('您选择的地址没有解析到结果！');
+                    }
+                })
+            },
+            immediate:true
+        }
     },
     methods: {
         ...mapMutations([
@@ -168,13 +200,26 @@ export default {
                 console.log(res)
             }
         },
+        handler({BMap, map}) {
+            this.myGeo=new BMap.Geocoder()
+            this.myGeo.getPoint(this.currentHotelInfo.address, (point)=>{
+                if(point){
+                    console.log(point)
+                    this.point=point
+                }else{
+                    alert('您选择的地址没有解析到结果！');
+                }
+            })
+        }
 
     }
 }
 </script>
 <style scoped lang="less">
     .hotelDetailCard {
-        padding: 50px 50px;
+        padding:25px;
+        margin: 50px 60px;
+        background-color: rgba(255,255,255,0.9);
         .card-wrapper{
             display: flex;
             justify-content: space-around;

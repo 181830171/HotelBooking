@@ -83,13 +83,13 @@ CREATE TABLE `Hotel` (
 BEGIN;
 /*!40000 ALTER TABLE `Hotel` DISABLE KEYS */;
 INSERT INTO `Hotel` VALUES (1,'汉庭酒店','欢迎您入住','南京市玄武区如意里20号','RegionA','Three',1829373819,4.5,1,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel1.jpg'),
-                           (2,'儒家酒店','欢迎您入住','南京市鼓楼区珠江路268号','RegionA','Five',1829373819,4.7,2,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel2.jpg'),
-                           (3,'桂圆酒店','欢迎您入住','南京市栖霞区珠江路268号','RegionB','Four',1829553719,4.8,3,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel3.jpg'),
+                           (2,'儒家酒店','欢迎您入住','南京市珠江路268号','RegionA','Five',1829373819,4.7,2,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel2.jpg'),
+                           (3,'桂圆酒店','欢迎您入住','南京市禄口机场翔燕路5号','RegionB','Four',1829553719,4.8,3,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel3.jpg'),
                            (4,'万达酒店','欢迎您入住','南京市江宁区竹山路55号','RegionB','Four',1829553719,4.6,4,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel4.jpg'),
                            (5,'南京宾馆','欢迎您入住','南京市栖霞区仙林大道166号','RegionC','Four',1829553719,4.8,5,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel5.png'),
                            (6,'希尔顿大酒店','欢迎您入住','南京市建邺区万景园路8号','RegionD','Five',1829553719,4.8,6,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel6.jpg'),
-                           (7,'七天酒店','欢迎您入住','南京市建邺区万景园路8号','RegionE','Three',1829553719,4.8,13,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel7.jpg'),
-                           (8,'金陵大酒店','欢迎您入住','南京市建邺区万景园路8号','RegionE','Five',1829553719,4.8,14,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel8.jpg');
+                           (7,'七天酒店','欢迎您入住','南京市汉中路101号金鹰新街口店B座','RegionE','Three',1829553719,4.8,13,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel7.jpg'),
+                           (8,'金陵大酒店','欢迎您入住','南京市玄武区中山东路319号','RegionE','Five',1829553719,4.8,14,'http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/hotel8.jpg');
 /*!40000 ALTER TABLE `Hotel` ENABLE KEYS */;
 COMMIT;
 

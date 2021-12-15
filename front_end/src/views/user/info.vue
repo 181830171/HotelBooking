@@ -141,6 +141,7 @@
             <a-tab-pane tab="我的评论" key="3">
                 <UserComments :comment="Comment"  v-for="Comment in comments" :key="Comment.index">
                 </UserComments>
+                <a-empty v-if="comments.length<1" description="暂无评价"/>
             </a-tab-pane>
         </a-tabs>
     </div>
@@ -153,11 +154,11 @@ import Evaluation from "../hotel/components/evaluation";
 import UserComments from './userComments'
 const moment = require('moment')
 const columns = [
-    {  
+    {
         title: '订单号',
         dataIndex: 'id',
     },
-    {  
+    {
         title: '酒店名',
         dataIndex: 'hotelName',
     },
@@ -198,7 +199,7 @@ const columns = [
       key: 'action',
       scopedSlots: { customRender: 'action' },
     },
-    
+
   ];
 export default {
     name: 'info',
@@ -354,7 +355,9 @@ export default {
 </script>
 <style scoped lang="less">
     .info-wrapper {
-        padding: 50px;
+        padding: 25px;
+        margin: 50px 60px;
+        background-color: rgba(255,255,255,0.9);
         .chart {
             display: flex;
             align-items: center;
@@ -375,5 +378,5 @@ export default {
     }
 </style>
 <style lang="less">
-    
+
 </style>
