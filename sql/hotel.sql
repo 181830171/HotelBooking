@@ -261,6 +261,7 @@ CREATE TABLE `CommentList` (
 --
 
 /*!40000 ALTER TABLE `CommentList` DISABLE KEYS */;
+INSERT INTO `CommentList` VALUES (1,200,1,200,'2021-07-02',4.5,5,5,5,'非常愉快的一次入住体验'),(2,201,1,201,'2021-08-25',4.5,4,5,4.5,'环境给人感觉非常舒服');
 /*!40000 ALTER TABLE `CommentList` ENABLE KEYS */;
 
 

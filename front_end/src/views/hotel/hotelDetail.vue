@@ -6,46 +6,48 @@
                     {{ currentHotelInfo.title }}
                 </h1>
                 <div class="hotel-info">
-                    <a-card style="width: 250px">
-                        <img
-                            alt="example"
-                            :src="currentHotelInfo.picture"
-                            slot="cover"
-                            referrerPolicy="no-referrer"
-                            height="270px"
-                            />
-                    </a-card>
-                    <div class="info">
-                        <div class="items" v-if="currentHotelInfo.name">
-                            <span class="label">酒店名称：</span>
-                            <span class="value">{{ currentHotelInfo.name }}</span>
-                        </div>
-                        <div class="items" v-if="currentHotelInfo.bizRegion">
-                            <span class="label">酒店商圈:</span>
-                            <span class="value">{{ currentHotelInfo.bizRegion.charAt(6) }}区</span>
-                        </div>
-<!--                        <div class="items" v-if="currentHotelInfo.address">-->
-<!--                            <span class="label">地址：</span>-->
-<!--                            <span class="value">{{ currentHotelInfo.address }}</span>-->
-<!--                        </div>-->
-                        <div class="items" v-if="currentHotelInfo.rate">
-                            <span class="label">评分:</span>
-                            <span class="value">{{ currentHotelInfo.rate }}分</span>
-                        </div>
-                        <div class="items" v-else>
-                            <span class="label">评分：</span>
-                            <span class="value">该酒店暂未被评价过</span>
-                        </div>
-                        <div class="items" v-if="currentHotelInfo.hotelStar">
-                            <span class="label">星级：</span>
-                            <a-rate style="font-size: 15px" :value="list.indexOf(currentHotelInfo.hotelStar)+1" disabled />
-                        </div>
-                        <div class="items" v-if="currentHotelInfo.description">
-                            <span class="label">酒店简介:</span>
-                            <span class="value">{{ currentHotelInfo.description }}</span>
+                    <div style="display: flex;justify-content: flex-start">
+                        <a-card style="width: 270px">
+                            <img
+                                alt="example"
+                                :src="currentHotelInfo.picture"
+                                slot="cover"
+                                referrerPolicy="no-referrer"
+                                height="320px"
+                                />
+                        </a-card>
+                        <div class="info">
+                            <div class="items" v-if="currentHotelInfo.name">
+                                <span class="label">酒店名称：</span>
+                                <span class="value">{{ currentHotelInfo.name }}</span>
+                            </div>
+                            <div class="items" v-if="currentHotelInfo.bizRegion">
+                                <span class="label">酒店商圈:</span>
+                                <span class="value">{{ currentHotelInfo.bizRegion.charAt(6) }}区</span>
+                            </div>
+    <!--                        <div class="items" v-if="currentHotelInfo.address">-->
+    <!--                            <span class="label">地址：</span>-->
+    <!--                            <span class="value">{{ currentHotelInfo.address }}</span>-->
+    <!--                        </div>-->
+                            <div class="items" v-if="currentHotelInfo.rate">
+                                <span class="label">评分:</span>
+                                <span class="value">{{ currentHotelInfo.rate }}分</span>
+                            </div>
+                            <div class="items" v-else>
+                                <span class="label">评分：</span>
+                                <span class="value">该酒店暂未被评价过</span>
+                            </div>
+                            <div class="items" v-if="currentHotelInfo.hotelStar">
+                                <span class="label">星级：</span>
+                                <a-rate style="font-size: 15px" :value="list.indexOf(currentHotelInfo.hotelStar)+1" disabled />
+                            </div>
+                            <div class="items" v-if="currentHotelInfo.description">
+                                <span class="label">酒店简介:</span>
+                                <span class="value">{{ currentHotelInfo.description }}</span>
+                            </div>
                         </div>
                     </div>
-                    <baidu-map :center="point" :zoom="18" @ready="handler" style="margin-left:25px;width: 550px;height: 300px">
+                    <baidu-map :center="point" :zoom="18" @ready="handler" style="margin-left:25px;width: 550px;height: 320px">
                         <bm-marker :position="point">
                             <bm-label
                                 :content="hotelAddress"
@@ -92,7 +94,11 @@
                         </div>
                         <a-empty v-else description="该酒店暂未上传图片"/>
                     </a-tab-pane>
-                    <a-tab-pane tab="酒店评价" key="4">
+                    <a-tab-pane key="4">
+                        <div slot="tab">
+                            酒店评价
+                            <a-badge :count="hotelComments.length" :show-zero="true" :number-style="{ backgroundColor: '#87d068c8' }" />
+                        </div>
                         <div v-if="hotelComments.length>0">
                             <CommentList :comment="Comment" v-for="Comment in hotelComments" :key="Comment.index"></CommentList>
                         </div>
@@ -231,7 +237,8 @@ export default {
     .hotel-info {
         display: flex;
         align-items: stretch;
-        justify-content: flex-start;
+        justify-content: space-around;
+
         .info{
             padding: 10px 0;
             display: flex;
