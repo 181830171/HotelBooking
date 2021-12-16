@@ -182,10 +182,13 @@ const rows=[
             ]),
             confirm() {
                 this.set_hotelInListVisible(false)
+                this.hotelLoading()
             },
            checkHotel(hotelid){
-               this.$router.push({ name: 'hotelDetail', params: { hotelId: hotelid}})
-               this.set_hotelInListVisible(false)
+               //this.$router.push({ name: 'hotelDetail', params: { hotelId: hotelid}})
+               let routerurl = this.$router.resolve({ name: 'hotelDetail', params: { hotelId: hotelid}})
+               window.open(routerurl.href,'_blank')
+               //this.set_hotelInListVisible(false)
            },
             handleSearch(){
                 this.hotelSearchList=[]

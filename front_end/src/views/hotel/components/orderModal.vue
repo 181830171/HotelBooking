@@ -25,7 +25,7 @@
                         'phoneNumber',
                         { rules: [{required: true, message: '请填写入住人联系手机', }] }
                     ]"
-                    maxLength="11"
+                    maxLength=11
                 />
             </a-form-item>
 
@@ -123,22 +123,37 @@
                 </a-table>
             </a-radio-group>
             <div v-if="vipInfo.viptype!=undefined">
-                <h2>VIP优惠</h2>
                 <div>
-                    <a-popover title="提示">
-                        <template slot="content">
-                            <p>若选择享受优惠会自动享受二者中折扣更低的优惠</p>
-                        </template>
-                        <a-button type="link" @click="enjoyVipDiscount" style="margin-left: 30px" :disabled="discounted">享受以下会员优惠</a-button>
-                        <a-button type="link" @click="revert" style="margin-bottom: 30px" :disabled="!discounted">重置</a-button>
-                    </a-popover>
+                <a-popover title="提示">
+                    <template slot="content">
+                        <p>会员优惠和地区优惠不可同时享用，自动选择最大优惠</p>
+                    </template>
+                <h2>VIP优惠</h2>
+                </a-popover>
                 </div>
-                <a-tag color="#108ee9" style="margin-left: 35px">{{vipInfo.viptype}}等级优惠：{{vipInfo.vipDiscount}}折</a-tag>
-                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionA'">A区商圈优惠：{{regionDiscount[0]}}折</a-tag>
-                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionB'">B区商圈优惠：{{regionDiscount[1]}}折</a-tag>
-                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionC'">C区商圈优惠：{{regionDiscount[2]}}折</a-tag>
-                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionD'">D区商圈优惠：{{regionDiscount[3]}}折</a-tag>
-                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionE'">E区商圈优惠：{{regionDiscount[4]}}折</a-tag>
+                <a-radio-group v-model="vipDis" @change="countVipDis" class="vip-radio-group">
+                    <a-radio :value="0">{{vipInfo.viptype}}等级优惠：{{vipInfo.vipDiscount}}折</a-radio><br/>
+                    <a-radio :value="1" v-if="currentHotelInfo.bizRegion=='RegionA'">A区商圈优惠：{{regionDiscount[0]}}折</a-radio><br/>
+                    <a-radio :value="2" v-if="currentHotelInfo.bizRegion=='RegionB'">B区商圈优惠：{{regionDiscount[1]}}折</a-radio><br/>
+                    <a-radio :value="3" v-if="currentHotelInfo.bizRegion=='RegionC'">C区商圈优惠：{{regionDiscount[2]}}折</a-radio><br/>
+                    <a-radio :value="4" v-if="currentHotelInfo.bizRegion=='RegionD'">D区商圈优惠：{{regionDiscount[3]}}折</a-radio><br/>
+                    <a-radio :value="5" v-if="currentHotelInfo.bizRegion=='RegionE'">A区商圈优惠：{{regionDiscount[4]}}折</a-radio>
+                </a-radio-group>
+<!--                <div>-->
+<!--                    <a-popover title="提示">-->
+<!--                        <template slot="content">-->
+<!--                            <p>若选择享受优惠会自动享受二者中折扣更低的优惠</p>-->
+<!--                        </template>-->
+<!--                        <a-button type="link" @click="enjoyVipDiscount" style="margin-left: 30px" :disabled="discounted">享受以下会员优惠</a-button>-->
+<!--                        <a-button type="link" @click="revert" style="margin-bottom: 30px" :disabled="!discounted">重置</a-button>-->
+<!--                    </a-popover>-->
+<!--                </div>-->
+<!--                <a-tag color="#108ee9" style="margin-left: 35px">{{vipInfo.viptype}}等级优惠：{{vipInfo.vipDiscount}}折</a-tag>-->
+<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionA'">A区商圈优惠：{{regionDiscount[0]}}折</a-tag>-->
+<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionB'">B区商圈优惠：{{regionDiscount[1]}}折</a-tag>-->
+<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionC'">C区商圈优惠：{{regionDiscount[2]}}折</a-tag>-->
+<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionD'">D区商圈优惠：{{regionDiscount[3]}}折</a-tag>-->
+<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionE'">E区商圈优惠：{{regionDiscount[4]}}折</a-tag>-->
             </div>
             <a-divider></a-divider>
              <a-form-item v-bind="formItemLayout" style="margin-top: 30px" label="结算后总价">
@@ -149,8 +164,9 @@
     </a-modal>
 </template>
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-const moment = require('moment')
+    import {mapActions, mapGetters, mapMutations} from 'vuex'
+
+    const moment = require('moment')
 
 const columns = [
     {  
@@ -197,7 +213,9 @@ export default {
             checkedList:'',
             finalPrice: '',
             regionDiscount:[0.9, 0.91, 0.92, 0.93, 0.94],
-            discounted:false,
+            discounted:true,
+            vipDis:0,
+            tempvipDis:0,
         }
     },
     computed: {
@@ -214,6 +232,10 @@ export default {
     },
     beforeCreate() {
         this.form = this.$form.createForm(this, { name: 'orderModal' });
+    },
+    mounted() {
+        this.vipDis=this.getLowestDiscountOption()
+        this.tempvipDis=this.vipDis
     },
     methods: {
         ...mapMutations([
@@ -239,6 +261,34 @@ export default {
         },
         changePeopleNum(v){
 
+        },
+        //提前算出最小优惠选项
+        getLowestDiscountOption(){
+            let temp=0
+            if(this.currentHotelInfo.bizRegion==="RegionB"){
+                temp=1
+            }else if(this.currentHotelInfo.bizRegion==="RegionC"){
+                temp=2
+            }else if(this.currentHotelInfo.bizRegion=="RegionD"){
+                temp=3
+            }else if(this.currentHotelInfo.bizRegion=="RegionE"){
+                temp=4
+            }
+            if(this.vipInfo.vipDiscount<this.regionDiscount){
+                return 0
+            }
+            return temp+1
+        },
+        countVipDis(){
+            //优惠价格写死
+            const dislist=[]
+            dislist.push(this.vipInfo.vipDiscount)
+            const totaldislist = dislist.concat(this.regionDiscount)
+            if(this.tempvipDis!=this.vipDis){
+                this.finalPrice=Math.round(this.finalPrice/totaldislist[this.tempvipDis]*totaldislist[this.vipDis])
+            }
+            this.tempvipDis = this.vipDis
+            console.log('改变了吗',this.finalPrice)
         },
         changeRoomNum(v) {
             this.totalPrice = Number(v) * Number(this.currentOrderRoom.price) * moment(this.form.getFieldValue('date')[1]).diff(moment(this.form.getFieldValue('date')[0]),'day')
@@ -287,6 +337,7 @@ export default {
         },
         revert(){
             this.discounted=false;
+            this.vipDis=''
             this.countMoney()
         },
         handleSubmit(e) {
@@ -331,3 +382,9 @@ export default {
     }
 }
 </script>
+<style scoped lang="less">
+    .vip-radio-group{
+        position:relative;
+        left:9%;
+    }
+</style>

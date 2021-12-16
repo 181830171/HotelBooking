@@ -396,7 +396,9 @@ export default {
 </script>
 <style scoped lang="less">
     .manageHotel-wrapper {
-        padding: 50px;
+        padding: 25px;
+        margin: 50px 60px;
+        background-color:rgba(255,255,255,0.9);
         .chart {
             display: flex;
             align-items: center;
