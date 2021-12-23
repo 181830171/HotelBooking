@@ -122,40 +122,25 @@
                     </a-radio>
                 </a-table>
             </a-radio-group>
-            <div v-if="vipInfo.viptype!=undefined">
+            <div>
                 <div>
                 <a-popover title="提示">
                     <template slot="content">
-                        <p>会员优惠和地区优惠不可同时享用，自动选择最大优惠</p>
+                        <p>如是会员，会员优惠和地区优惠不可同时享用，自动选择最大优惠</p>
                     </template>
-                <h2>VIP优惠</h2>
+                <h3 style="margin-top:-24px">VIP和商圈优惠</h3>
                 </a-popover>
                 </div>
                 <a-radio-group v-model="vipDis" @change="countVipDis" class="vip-radio-group">
-                    <a-radio :value="0">{{vipInfo.viptype}}等级优惠：{{vipInfo.vipDiscount}}折</a-radio><br/>
+                    <a-radio :value="0" v-if="vipInfo.viptype!=undefined" style="margin-bottom:10px">{{vipInfo.viptype}}等级优惠：{{vipInfo.vipDiscount}}折</a-radio><br/>
                     <a-radio :value="1" v-if="currentHotelInfo.bizRegion=='RegionA'">A区商圈优惠：{{regionDiscount[0]}}折</a-radio><br/>
                     <a-radio :value="2" v-if="currentHotelInfo.bizRegion=='RegionB'">B区商圈优惠：{{regionDiscount[1]}}折</a-radio><br/>
                     <a-radio :value="3" v-if="currentHotelInfo.bizRegion=='RegionC'">C区商圈优惠：{{regionDiscount[2]}}折</a-radio><br/>
                     <a-radio :value="4" v-if="currentHotelInfo.bizRegion=='RegionD'">D区商圈优惠：{{regionDiscount[3]}}折</a-radio><br/>
                     <a-radio :value="5" v-if="currentHotelInfo.bizRegion=='RegionE'">A区商圈优惠：{{regionDiscount[4]}}折</a-radio>
                 </a-radio-group>
-<!--                <div>-->
-<!--                    <a-popover title="提示">-->
-<!--                        <template slot="content">-->
-<!--                            <p>若选择享受优惠会自动享受二者中折扣更低的优惠</p>-->
-<!--                        </template>-->
-<!--                        <a-button type="link" @click="enjoyVipDiscount" style="margin-left: 30px" :disabled="discounted">享受以下会员优惠</a-button>-->
-<!--                        <a-button type="link" @click="revert" style="margin-bottom: 30px" :disabled="!discounted">重置</a-button>-->
-<!--                    </a-popover>-->
-<!--                </div>-->
-<!--                <a-tag color="#108ee9" style="margin-left: 35px">{{vipInfo.viptype}}等级优惠：{{vipInfo.vipDiscount}}折</a-tag>-->
-<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionA'">A区商圈优惠：{{regionDiscount[0]}}折</a-tag>-->
-<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionB'">B区商圈优惠：{{regionDiscount[1]}}折</a-tag>-->
-<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionC'">C区商圈优惠：{{regionDiscount[2]}}折</a-tag>-->
-<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionD'">D区商圈优惠：{{regionDiscount[3]}}折</a-tag>-->
-<!--                <a-tag color="#108ee9" style="margin-left: 35px" v-if="currentHotelInfo.bizRegion=='RegionE'">E区商圈优惠：{{regionDiscount[4]}}折</a-tag>-->
             </div>
-            <a-divider></a-divider>
+            <a-divider style="margin-top:-24px"></a-divider>
              <a-form-item v-bind="formItemLayout" style="margin-top: 30px" label="结算后总价">
                 <span>￥{{ finalPrice }}</span>
 <!--                 <a-button type="link" style="margin-left: 20px" @click="countMoney">结算</a-button>-->
@@ -274,7 +259,7 @@ export default {
             }else if(this.currentHotelInfo.bizRegion=="RegionE"){
                 temp=4
             }
-            if(this.vipInfo.vipDiscount<this.regionDiscount){
+            if(this.vipInfo.vipDiscount !==undefined && this.vipInfo.vipDiscount<this.regionDiscount){
                 return 0
             }
             return temp+1
@@ -318,7 +303,7 @@ export default {
                 else if(this.currentHotelInfo.bizRegion=='RegionD'){region_Discount=this.regionDiscount[3];}
                 else if(this.currentHotelInfo.bizRegion=='RegionE'){region_Discount=this.regionDiscount[4];}
                 let finalDiscount=this.vipInfo.vipDiscount;
-                if(region_Discount<this.vipInfo.vipDiscount){
+                if(this.vipInfo.vipDiscount===undefined || region_Discount<this.vipInfo.vipDiscount){
                     finalDiscount=region_Discount
                 }
                 this.finalPrice=Math.round(this.finalPrice*finalDiscount);

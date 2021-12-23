@@ -89,11 +89,14 @@
     </a-layout>
 <!--      <hotel-in-list></hotel-in-list>-->
   </div>
-    <a-drawer
+    <a-modal
         title="活动详情"
         placement="right"
         :visible="visible1"
-        @close="onClose"
+        cancelText="取消"
+        okText="确认"
+        @cancel="onClose"
+        @ok="onClose"
         :width="500"
     >
         <a-descriptions
@@ -118,7 +121,7 @@
                 全网站酒店同享
             </a-descriptions-item>
         </a-descriptions>
-    </a-drawer>
+    </a-modal>
     </div>
 </template>
 <script>
