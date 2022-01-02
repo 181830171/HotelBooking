@@ -219,8 +219,6 @@ export default {
     .hotelDetailCard {
         padding:25px;
         margin: 50px 60px;
-        //position: relative;
-        height: 1000px;
         background-color: rgba(255,255,255,0.9);
         .card-wrapper{
             margin-bottom: 20px;
