@@ -1,5 +1,5 @@
 <template>
-    <a-layout>
+    <a-layout style="padding: 0px 20px">
         <a-comment :author="'用户Id: '+comment.userId"
                    :content="'评论内容: '+comment.userEvaluation"
                    :datetime="comment.createDate"

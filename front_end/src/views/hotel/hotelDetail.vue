@@ -2,12 +2,9 @@
 <!--    <a-layout>-->
 <!--        <a-layout-content>-->
             <div class="hotelDetailCard">
-                <h1>
-                    {{ currentHotelInfo.title }}
-                </h1>
                 <div class="hotel-info">
-                    <div style="display: flex;justify-content: flex-start">
-                        <a-card style="width: 270px">
+                    <div style="display: flex;justify-content: flex-start;width: 73%">
+                        <a-card style="width: 250px">
                             <img
                                 alt="example"
                                 :src="currentHotelInfo.picture"
@@ -25,10 +22,6 @@
                                 <span class="label">酒店商圈:</span>
                                 <span class="value">{{ currentHotelInfo.bizRegion.charAt(6) }}区</span>
                             </div>
-    <!--                        <div class="items" v-if="currentHotelInfo.address">-->
-    <!--                            <span class="label">地址：</span>-->
-    <!--                            <span class="value">{{ currentHotelInfo.address }}</span>-->
-    <!--                        </div>-->
                             <div class="items" v-if="currentHotelInfo.rate">
                                 <span class="label">评分:</span>
                                 <span class="value">{{ currentHotelInfo.rate }}分</span>
@@ -42,12 +35,12 @@
                                 <a-rate style="font-size: 15px" :value="list.indexOf(currentHotelInfo.hotelStar)+1" disabled />
                             </div>
                             <div class="items" v-if="currentHotelInfo.description">
-                                <span class="label">酒店简介:</span>
+                                <span class="label">简介:</span>
                                 <span class="value">{{ currentHotelInfo.description }}</span>
                             </div>
                         </div>
                     </div>
-                    <baidu-map :center="point" :zoom="18" @ready="handler" style="margin-left:25px;width: 550px;height: 320px">
+                    <baidu-map :center="point" :zoom="18" @ready="handler" style="margin-left:10px;width: 460px;height: 320px">
                         <bm-marker :position="point">
                             <bm-label
                                 :content="hotelAddress"
@@ -99,8 +92,9 @@
                             酒店评价
                             <a-badge :count="hotelComments.length" :show-zero="true" :number-style="{ backgroundColor: '#87d068c8' }" />
                         </div>
-                        <div v-if="hotelComments.length>0">
-                            <CommentList :comment="Comment" v-for="Comment in hotelComments" :key="Comment.index"></CommentList>
+                        <div v-if="hotelComments.length>0" style="border: 1px solid lightgray">
+                            <CommentList :comment="Comment" v-for="Comment in hotelComments.slice(currentCommentPage*4-4,Math.min(currentCommentPage*4,hotelComments.length))" :key="Comment.id"></CommentList>
+                            <a-pagination style="margin-top: 10px;float: right" v-model="currentCommentPage" :defaultPageSize="4" :total="hotelComments.length" show-less-items showQuickJumper />
                         </div>
                         <a-empty v-else description="该酒店暂无评价"/>
                     </a-tab-pane>
@@ -143,7 +137,8 @@ export default {
             ],
             activeKey:'1',
             point: {lat:39.915,lng:116.404},
-            myGeo:{}
+            myGeo:{},
+            currentCommentPage:1,
         }
     }
     ,
@@ -155,7 +150,6 @@ export default {
             'currentPictureList',
             'userId',
         ]),
-
         hotelAddress(){
             return this.currentHotelInfo.address
         }
@@ -244,6 +238,7 @@ export default {
             display: flex;
             flex-direction: column;
             margin-left: 20px;
+            width: 60%;
             .items {
                 display: flex;
                 align-items: center;

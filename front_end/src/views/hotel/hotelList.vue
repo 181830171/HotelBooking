@@ -279,7 +279,7 @@ export default {
                     console.log('point1', point1)
                     for (let i = 0; i < this.hotelList.length; i++) {
                         if (this.hotelList[i].name.indexOf(_this.searchForm.name) >= 0) {
-                            this.myGeo.getPoint(this.hotelList[i].address, (point2) => {
+                            this.myGeo.getPoint('南京市'+this.hotelList[i].address, (point2) => {
                                 if (point2) {
                                     const distance = (_this.myMap.getDistance(point1, point2) / 1000).toFixed(2)
                                     console.log(this.hotelList[i].address,point2,distance)
