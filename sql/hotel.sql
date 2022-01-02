@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS `Hotel`;
 CREATE TABLE `Hotel` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hotelName` varchar(255) NOT NULL,
-  `hotelDescription` varchar(255) DEFAULT NULL,
+  `hotelDescription` varchar(65535) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `bizRegion` varchar(255) DEFAULT NULL,
   `hotelStar` varchar(255) DEFAULT NULL,
@@ -240,7 +240,7 @@ CREATE TABLE `Credit` (
 --
 DROP TABLE IF EXISTS `CommentList`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CommentList` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `userId` int(11) DEFAULT NULL,
@@ -251,9 +251,9 @@ CREATE TABLE `CommentList` (
     `serviceScore` double DEFAULT NULL,
     `environmentScore` double(65, 0) DEFAULT NULL,
     `finalScore` double(65, 0) DEFAULT NULL,
-    `userEvaluation` varchar(255) DEFAULT NULL,
+    `userEvaluation` varchar(65535) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
