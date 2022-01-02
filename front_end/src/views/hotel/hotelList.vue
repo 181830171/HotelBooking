@@ -218,9 +218,9 @@ export default {
     hotelsInCurrentPage(){
       //this.hotelInDisplay = this.hotelList.slice(this.currentPage*4-4,this.currentPage*4)
       if((this.isSearch || this.searchForm.name || this.searchForm.addr || this.searchForm.region) && this.hotelInDisplay.length!==0){
-          return this.hotelInDisplay.slice(this.currentPage*4-4,this.currentPage*4)
+          return this.hotelInDisplay.slice(this.currentPage*6-6,this.currentPage*6)
       }
-      return this.hotelList.slice(this.currentPage*4-4,this.currentPage*4)
+      return this.hotelList.slice(this.currentPage*6-6,this.currentPage*6)
     }
   },
   methods: {

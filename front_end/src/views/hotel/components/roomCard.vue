@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <a-card hoverable style="width: 300px">
+    <div class="roomCardBox">
+        <a-card hoverable style="width: 300px;border-radius: 5px">
             <img
                     slot="cover"
                     alt="example"
@@ -20,7 +20,7 @@
                 />
             </a-card-meta>
             <a-divider></a-divider>
-            <div>
+            <div style="display: flex; flex-flow: row nowrap;justify-content: space-around">
                 <a-tag color="purple"><a-icon type="wifi"/> WIFI</a-tag>
                 <a-tag color="green"><a-icon type="bell"/> 叫早</a-tag>
                 <a-tag color="blue" v-if="Number(roomInfo.breakfast)==1"><a-icon type="coffee"/> 早餐</a-tag>
@@ -61,5 +61,12 @@
 </script>
 
 <style scoped>
-
+  .roomCardBox{
+    transform: scale(1);
+  }
+  .roomCardBox:hover{
+    box-shadow: 5px 5px 10px rgba(0,0,0,.2);
+    transform: scale(1.01);
+    transition: transform 0.8s;
+  }
 </style>

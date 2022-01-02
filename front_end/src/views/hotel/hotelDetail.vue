@@ -219,13 +219,16 @@ export default {
     .hotelDetailCard {
         padding:25px;
         margin: 50px 60px;
+        //position: relative;
+        height: 1000px;
         background-color: rgba(255,255,255,0.9);
         .card-wrapper{
+            margin-bottom: 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-evenly;
+            align-content: space-evenly;
             flex-wrap: wrap;
-            flex-grow: 3;
-            /*min-height: 800px*/
+            flex-grow: 1;
         }
     }
     .hotel-info {

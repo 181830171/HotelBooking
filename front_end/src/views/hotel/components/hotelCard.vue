@@ -75,7 +75,7 @@ export default {
     .hotelCard:hover .imgBox img{
       transform: scale(1.2);
     }
-    // 阴影盒子
+    // 遮罩盒子
     .descriptions {
       position: absolute;
       top:10px;
