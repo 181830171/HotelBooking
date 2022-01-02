@@ -1,10 +1,19 @@
 <template>
     <a-carousel >
-<!--        <div class="carousel-item"><img src='http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/four.jpg'></div>-->
-<!--        <div class="carousel-item"><img src='http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/one.jpg' ></div>-->
-        <div class="carousel-item" v-for="picture in pictures" :key="picture.index"><img :src="picture.linkStr"></div>
-<!--        <div class="carousel-item"><img src='http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/three.jpg' ></div>-->
-<!--        <div class="carousel-item"><img src='http://siege-lion-programme.oss-cn-shanghai.aliyuncs.com/%E9%85%92%E5%BA%97%E5%9B%BE%E7%89%87/two.jpg' ></div>-->
+        <div class="carousel-item">
+            <div class="my-picture-comp" >
+                <img :src="pictures[0].linkStr">
+                <img :src="pictures[1].linkStr">
+                <img :src="pictures[2].linkStr">
+                <img :src="pictures[3].linkStr">
+            </div>
+        </div>
+        <div class="carousel-item" >
+            <div class="my-picture-comp" >
+                <img :src="pictures[4].linkStr">
+                <img :src="pictures[5].linkStr">
+            </div>
+        </div>
     </a-carousel>
 
 </template>
@@ -19,19 +28,37 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-    div{
-        width:100%;
-        height: 400px;
-        position: relative;
+.my-picture-comp{
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    width: fit-content;
+    img{
+        margin: 10px 10px;
+        border: solid 1px lightgray;
+        transform: scale(1);
     }
-    img {
-        width: 50%;
-        height: 400px;
-        position: absolute;
-        left: 25%;
-        /*margin-top: -25px; !* 高度的一半 *!*/
-        /*margin-left: -25px; !* 宽度的一半 *!*/
+    img:hover{
+        box-shadow: 5px 5px 10px rgba(0,0,0,.2);
+        transform: scale(1.01);
+        transition: transform 0.8s;
     }
+}
+    //div.carousel-item{
+    //    display: flex;
+    //    flex-direction: row;
+    //    img{
+    //        width: 33%;
+    //    }
+    //    //width:100%;
+    //    //height: 400px;
+    //    //position: relative;
+    //}
+    //img {
+    //    width: 33%;
+    //    /*margin-top: -25px; !* 高度的一半 *!*/
+    //    /*margin-left: -25px; !* 宽度的一半 *!*/
+    //}
 
 
 
