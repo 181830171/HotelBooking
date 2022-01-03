@@ -82,14 +82,14 @@ export default {
       right:10px;
       left:10px;
       bottom:10px;
-      background: rgba(0,0,0,0.6);
-      transform: scale(0);
+      background: rgba(0,0,0,0.4);
+      transform: scale(1);
       transition: transform .7s;
       border-radius: 5px;
     }
-    .hotelCard:hover .descriptions {
-      transform: scale(1);
-    }
+    //.hotelCard:hover .descriptions {
+    //  transform: scale(1);
+    //}
     .descriptions ::v-deep .ant-descriptions-title {
       margin-bottom: 20px;
       color:rgba(255,255,255,0.85);

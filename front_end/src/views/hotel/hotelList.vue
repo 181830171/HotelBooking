@@ -77,7 +77,7 @@
                   v-model="currentPage"
                   showQuickJumper
                   :total="hotelInDisplay.length"
-                  :defaultPageSize="4"
+                  :defaultPageSize="6"
                   @change="pageChange"></a-pagination>
 <!--                //add on 5.10-->
                 <hotelInList></hotelInList>
@@ -258,7 +258,9 @@ export default {
       this.getHotelList()
     },
     jumpToDetails(id){
-      this.$router.push({ name: 'hotelDetail', params: { hotelId: id}})
+      //this.$router.push({ name: 'hotelDetail', params: { hotelId: id}})
+      let routerurl = this.$router.resolve({ name: 'hotelDetail', params: { hotelId: id}})
+      window.open(routerurl.href,'_blank')
     },
       //add on 5.10
     showHotelInList(){
@@ -283,7 +285,7 @@ export default {
                                 if (point2) {
                                     const distance = (_this.myMap.getDistance(point1, point2) / 1000).toFixed(2)
                                     console.log(this.hotelList[i].address,point2,distance)
-                                    if(distance<=3){
+                                    if(distance<=2){
                                         _this.hotelInDisplay.push(_this.hotelList[i]);
                                     }
                                 } else {
