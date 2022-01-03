@@ -43,7 +43,7 @@
                           <template slot="title">
                               <span>点击查看详情</span>
                           </template>
-                          <img style="height: 200px;margin: auto" src="../../assets/double11.jpg" @click="showDrawer(coupons[0])">
+                          <img style="height: 365px;width: 100%" src="../../assets/2.jpg" @click="showDrawer(coupons[0])">
                       </a-tooltip>
                   </div>
                   <div>
@@ -51,7 +51,7 @@
                           <template slot="title">
                               <span>点击查看详情</span>
                           </template>
-                          <img style="height: 200px;margin:auto" src="../../assets/childrenDay.jpg" @click="showDrawer(coupons[1])">
+                          <img style="height: 365px;width: 100%" src="../../assets/childrenDay.jpg" @click="showDrawer(coupons[1])">
                       </a-tooltip>
                   </div>
               </a-carousel>
